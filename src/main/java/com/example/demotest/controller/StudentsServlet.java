@@ -58,7 +58,7 @@ public class StudentsServlet extends HelloServlet {
             List<Students> studentsList = null;
             studentsList = iManagerDAO.selectAll();
             req.setAttribute("studentsList", studentsList);
-            RequestDispatcher dispatcher = req.getRequestDispatcher("view/Students.jsp");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("view/home.jsp");
             dispatcher.forward(req, resp);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -71,15 +71,15 @@ public class StudentsServlet extends HelloServlet {
     }
     private void createStudents(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 //        int id = Integer.parseInt(request.getParameter("id"));
-        String name = new String(request.getParameter("name").getBytes("iso-8859-1"), "utf-8");
+        String name = request.getParameter("name");
         String dateOfBirth = request.getParameter("dateOfBirth");
         String address = request.getParameter("address");
-        String phoneNumber = new String(request.getParameter("phoneNumber").getBytes("iso-8859-1"), "utf-8");
+        String phoneNumber =request.getParameter("phoneNumber");
         String email = request.getParameter("email");
         String classroom = request.getParameter("classroom");
         Students students = new Students(name,dateOfBirth,address,phoneNumber,email,classroom);
         iManagerDAO.create(students);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("view/add_students.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/home.jsp");
         request.setAttribute("message", "New product was created");
         try {
             dispatcher.forward(request, response);
@@ -99,7 +99,7 @@ public class StudentsServlet extends HelloServlet {
             dispatcher = request.getRequestDispatcher("error-404.jsp");
         } else {
             request.setAttribute("students", students);
-            dispatcher = request.getRequestDispatcher("view/add_students.jsp");
+            dispatcher = request.getRequestDispatcher("view/update.jsp");
         }
         try {
             dispatcher.forward(request, response);
@@ -120,7 +120,7 @@ public class StudentsServlet extends HelloServlet {
         String classroom = request.getParameter("classroom");
         Students students = new Students(name,dateOfBirth,address,phoneNumber,email,classroom);
         iManagerDAO.update(students);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/Students");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/home.jsp");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException e) {
@@ -138,7 +138,7 @@ public class StudentsServlet extends HelloServlet {
             studentsList = iManagerDAO.selectAll();
 
             req.setAttribute("studentsList", studentsList);
-            RequestDispatcher dispatcher = req.getRequestDispatcher("view/students.jsp");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("view/home.jsp");
             dispatcher.forward(req,resp);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

@@ -11,13 +11,13 @@
     <title>add</title>
 </head>
 <body>
-<form action="">
-    <input type="text" class="name" placeholder="name">
-    <input type="text" class="dateOfBirth" placeholder="dateOfBirth">
-    <input type="text" class="address" placeholder="address">
-    <input type="text" class="phoneNumber" placeholder="phoneNumber">
-    <input type="text" class="email" placeholder="email">
-    <input type="text" class="classroom" placeholder="classroom">
+<form action="/Students?action=create" method="post">
+    <input type="text" class="name" placeholder="name" name="name">
+    <input type="text" class="dateOfBirth" placeholder="dateOfBirth" name="dateOfBirth">
+    <input type="text" class="address" placeholder="address" name="address">
+    <input type="text" class="phoneNumber" placeholder="phoneNumber" name="phoneNumber">
+    <input type="text" class="email" placeholder="email" name="email">
+    <input type="text" class="classroom" placeholder="classroom" name="classroom">
     <input type="submit" class="btn" value="Nhấn">
 </form>
 

@@ -29,7 +29,7 @@ public class StudentsDAO implements IManagerDAO<Students>{
                 String phoneNumber = resultSet.getString("phoneNumber");
                 String email = resultSet.getString("email");
                 String classroom = resultSet.getString("classroom");
-                Students students = new Students(name, dateOfBirth, address, phoneNumber,email,classroom);
+                Students students = new Students(id,name, dateOfBirth, address, phoneNumber,email,classroom);
                 studentsList.add(students);
             }
         } catch (SQLException throwables) {
@@ -88,7 +88,7 @@ public class StudentsDAO implements IManagerDAO<Students>{
 
     @Override
     public void update(Students o) {
-        try(PreparedStatement statement =connection.prepareStatement("UPDATE student1 SET categoryId = ?,brandId=?,image=?,name= ?, oldPrice=?, newPrice= ? WHERE id=?;")){
+        try(PreparedStatement statement =connection.prepareStatement("UPDATE student1 SET name = ?,dateOfBirth=?,address=?,phoneNumber= ?, email=?, classroom= ? WHERE id=?;")){
             statement.setString(1,o.getName());
             statement.setString(2, String.valueOf(o.getDateOfBirth()));
             statement.setString(3,o.getAddress());

@@ -144,6 +144,7 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-8"><h2>Customer <b>Details</b></h2></div>
+                    <a href="view/add_students.jsp" class="add">Thêm Students</a>
                     <div class="col-sm-4">
                         <div class="search-box">
                             <i class="material-icons">&#xE8B6;</i>
@@ -177,8 +178,8 @@
                         <td>${studentsList.classroom}</td>
                         <td>
                             <a href="#" class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
-                            <a href="/Students?action=update" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                                <a href="/Students?action=delete" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                            <a href="/Students?action=update&id=${studentsList.id}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <a href="/Students?action=delete&id=${studentsList.id}" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
 
 
                         </td>
