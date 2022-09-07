@@ -148,7 +148,10 @@
                     <div class="col-sm-4">
                         <div class="search-box">
                             <i class="material-icons">&#xE8B6;</i>
-                            <input type="text" class="form-control" placeholder="Search&hellip;">
+                            <form action="/Students?action=search" method="post">
+                                <input type="text" class="form-control" placeholder="Search&hellip;" name="search" >
+                            </form>
+
                         </div>
                     </div>
                 </div>

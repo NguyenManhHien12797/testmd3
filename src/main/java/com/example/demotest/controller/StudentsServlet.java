@@ -43,6 +43,7 @@ public class StudentsServlet extends HelloServlet {
                     showUpdateForm(request, response);
                     break;
 
+
                 default:
                     listStudents(request, response);
             }
@@ -79,7 +80,7 @@ public class StudentsServlet extends HelloServlet {
         String classroom = request.getParameter("classroom");
         Students students = new Students(name,dateOfBirth,address,phoneNumber,email,classroom);
         iManagerDAO.create(students);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("view/home.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/Students?action= ");
         request.setAttribute("message", "New product was created");
         try {
             dispatcher.forward(request, response);
@@ -111,22 +112,36 @@ public class StudentsServlet extends HelloServlet {
     }
 
     private void updateStudents(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-        //        int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("id"));
         String name = new String(request.getParameter("name").getBytes("iso-8859-1"), "utf-8");
         String dateOfBirth = request.getParameter("dateOfBirth");
         String address = request.getParameter("address");
         String phoneNumber = new String(request.getParameter("phoneNumber").getBytes("iso-8859-1"), "utf-8");
         String email = request.getParameter("email");
         String classroom = request.getParameter("classroom");
-        Students students = new Students(name,dateOfBirth,address,phoneNumber,email,classroom);
+        Students students = new Students(id,name,dateOfBirth,address,phoneNumber,email,classroom);
         iManagerDAO.update(students);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("view/home.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/Students?action= ");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void search(HttpServletRequest request, HttpServletResponse response){
+        String search = request.getParameter("search");
+        List<Students> studentsList = null;
+        try {
+            studentsList =  iManagerDAO.search(search);
+
+            request.setAttribute("studentsList", studentsList);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("view/home.jsp");
+            dispatcher.forward(request,response);
+        } catch (ServletException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -162,6 +177,10 @@ public class StudentsServlet extends HelloServlet {
                 case "update":
                     updateStudents(req, resp);
                     break;
+                case "search":
+                    search(req, resp);
+                    break;
+
 
                 default:
                     listStudents(req, resp);

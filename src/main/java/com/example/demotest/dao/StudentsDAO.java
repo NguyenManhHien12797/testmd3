@@ -11,10 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentsDAO implements IManagerDAO<Students>{
-    public static final String SEARCH_BY_NAME = "SELECT * FROM student1 WHERE name LIKE ?;";
-    public static final String SELECT_BY_ID = "SELECT * FROM student1 WHERE id=?;";
+    public static final String SEARCH_BY_NAME = "select S.id, S.name, S.dateOfBirth, S.address, S.phoneNumber, S.email, classroom.class from students as S join classroom on classroom.id = S.classroom_id where name like ?;";
+
+    public static final String SELECT_BY_ID = "SELECT * FROM students WHERE id=?;";
     Connection connection = ConnectionDB.getConnect();
-    public static final String SELECT_ALL_STUDENTS = "SELECT * FROM student1;";
+    public static final String SELECT_ALL_STUDENTS = "select S.id, S.name, S.dateOfBirth, S.address, S.phoneNumber, S.email, classroom.class from students as S join classroom on classroom.id = S.classroom_id;";
 
     @Override
     public List<Students> selectAll() {
@@ -28,7 +29,7 @@ public class StudentsDAO implements IManagerDAO<Students>{
                 String address = resultSet.getString("address");
                 String phoneNumber = resultSet.getString("phoneNumber");
                 String email = resultSet.getString("email");
-                String classroom = resultSet.getString("classroom");
+                String classroom = resultSet.getString("class");
                 Students students = new Students(id,name, dateOfBirth, address, phoneNumber,email,classroom);
                 studentsList.add(students);
             }
@@ -43,7 +44,7 @@ public class StudentsDAO implements IManagerDAO<Students>{
     @Override
     public void create(Students o) {
         try ( PreparedStatement statement = connection.prepareStatement(
-                "  INSERT INTO student1 (name,dateOfBirth,address,phoneNumber,email,classroom) VALUES (?,?,?,?,?,?);");
+                "  INSERT INTO students (name,dateOfBirth,address,phoneNumber,email,classroom_id) VALUES (?,?,?,?,?,?);");
         ) {
             statement.setString(1, o.getName());
             statement.setString(2, String.valueOf(o.getDateOfBirth()));
@@ -70,8 +71,8 @@ public class StudentsDAO implements IManagerDAO<Students>{
                 String address = resultSet.getString("address");
                 String phoneNumber = resultSet.getString("phoneNumber");
                 String email = resultSet.getString("email");
-                String classroom = resultSet.getString("classroom");
-                students = new Students(name, dateOfBirth, address, phoneNumber,email,classroom);
+                String classroom = resultSet.getString("classroom_id");
+                students = new Students(id,name, dateOfBirth, address, phoneNumber,email,classroom);
 
             }
         } catch (SQLException throwables) {
@@ -88,7 +89,7 @@ public class StudentsDAO implements IManagerDAO<Students>{
 
     @Override
     public void update(Students o) {
-        try(PreparedStatement statement =connection.prepareStatement("UPDATE student1 SET name = ?,dateOfBirth=?,address=?,phoneNumber= ?, email=?, classroom= ? WHERE id=?;")){
+        try(PreparedStatement statement =connection.prepareStatement("UPDATE students SET `name` = ?, `dateOfBirth` = ?, `address` = ?, `phoneNumber` = ?, `email` = ?, `classroom_id` = ? WHERE (`id` = ?);")){
             statement.setString(1,o.getName());
             statement.setString(2, String.valueOf(o.getDateOfBirth()));
             statement.setString(3,o.getAddress());
@@ -105,12 +106,32 @@ public class StudentsDAO implements IManagerDAO<Students>{
 
     @Override
     public List<Students> search(String search) {
-        return null;
+        List<Students> studentsList = new ArrayList<>();
+        try( PreparedStatement statement =connection.prepareStatement(SEARCH_BY_NAME);){
+            statement.setString(1,"%"+search+"%");
+
+            ResultSet resultSet =statement.executeQuery();
+            while (resultSet.next()){
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String dateOfBirth = resultSet.getString("dateOfBirth");
+                String address = resultSet.getString("address");
+                String phoneNumber = resultSet.getString("phoneNumber");
+                String email = resultSet.getString("email");
+                String classroom = resultSet.getString("class");
+                Students students = new Students(id,name, dateOfBirth, address, phoneNumber,email,classroom);
+                studentsList.add(students);
+
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return studentsList;
     }
 
     @Override
     public void delete(int id) {
-        try( PreparedStatement statement = connection.prepareStatement("DELETE FROM student1 WHERE id =?;")){
+        try( PreparedStatement statement = connection.prepareStatement("DELETE FROM students WHERE id =?;")){
             statement.setInt(1,id);
             statement.executeUpdate();
         } catch (SQLException e) {

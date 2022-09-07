@@ -13,11 +13,14 @@
 <body>
 <form action="/Students?action=create" method="post">
     <input type="text" class="name" placeholder="name" name="name">
-    <input type="text" class="dateOfBirth" placeholder="dateOfBirth" name="dateOfBirth">
+    <input type="date" class="dateOfBirth" placeholder="dateOfBirth" name="dateOfBirth">
     <input type="text" class="address" placeholder="address" name="address">
     <input type="text" class="phoneNumber" placeholder="phoneNumber" name="phoneNumber">
     <input type="text" class="email" placeholder="email" name="email">
-    <input type="text" class="classroom" placeholder="classroom" name="classroom">
+    <select name="classroom" id="">
+        <option value="1">C0522G1</option>
+        <option value="2">C0622H1</option>
+    </select>
     <input type="submit" class="btn" value="Nhấn">
 </form>
 
